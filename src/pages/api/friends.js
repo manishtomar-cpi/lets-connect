@@ -1,5 +1,6 @@
 import connectMongo from '../../../lib/mongodb';
 import Friends from '../../models/friends';
+import mongoose from 'mongoose';
 
 export default async function handler(req, res) {
   await connectMongo();
@@ -7,7 +8,13 @@ export default async function handler(req, res) {
   const { userId } = req.query;
 
   try {
-    console.log('api hit>>>>>> for find friends')
+    // Validate the userId
+    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ error: 'Invalid userId' });
+    }
+
+    console.log('api hit>>>>>> for find friends');
+    
     const friends = await Friends.find({
       $or: [
         { user1: userId, status: 'accepted' },
