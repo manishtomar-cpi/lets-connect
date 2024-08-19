@@ -1,22 +1,38 @@
+import connectMongo from '../../../lib/mongodb';
+import User from '../../models/User';
 import jwt from 'jsonwebtoken';
-import connectMongo from '../../../../lib/mongodb';
-import User from '../../../models/User';
+import { serialize } from 'cookie';
 
 export default async function handler(req, res) {
-    console.log('in auth>>>>>>>>>>>>')
-  await connectMongo();
+  if (req.method === 'POST') {
+    try {
+      await connectMongo();
 
-  const token = req.cookies.token;
-console.log(token, 'token from me')
-  if (!token) {
-    return res.status(401).json({ error: 'Not authenticated' });
-  }
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.userId).select('-password');
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(401).json({ error: 'Invalid token' });
+      if (!user || user.password !== password) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+        expiresIn: '1h',
+      });
+
+      res.setHeader('Set-Cookie', serialize('token', token, {
+        httpOnly: true,
+        secure: false, // Set to false for HTTP
+        sameSite: 'lax', // Consider using 'lax' instead of 'strict' for better compatibility
+        maxAge: 3600,
+        path: '/',
+      }));
+
+      res.status(200).json({ message: 'Login successful' });
+    } catch (error) {
+      console.error('Error in login handler:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  } else {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 }
