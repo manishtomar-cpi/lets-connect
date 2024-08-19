@@ -1,0 +1,133 @@
+Docker Documentation for Next.js Application Deployment
+________________________________________
+Introduction to Docker
+Docker is a tool designed to make it easier to create, deploy, and run applications using containers. Containers allow developers to package an application with all its dependencies into a single, isolated environment that can run consistently across different systems.
+________________________________________
+Key Concepts
+1.	Dockerfile:
+o	A text file containing instructions on how to build a Docker image.
+o	It specifies the base image, dependencies, and commands needed to set up and run your application.
+2.	Docker Image:
+o	A snapshot of your application, including everything it needs to run: code, dependencies, and environment settings.
+o	Built from a Dockerfile, it's like a blueprint for creating containers.
+3.	Docker Container:
+o	A running instance of a Docker image.
+o	It’s an isolated environment where your application runs, ensuring consistency across different environments.
+________________________________________
+Creating a Dockerfile in root directory of the project
+The Dockerfile is the blueprint that tells Docker how to create the image. Here's an example Dockerfile for a Next.js application:
+ 
+
+Docker Setup and Installation
+Before you can start building and running Docker containers, you need to install Docker on your server. Here’s a step-by-step guide to getting Docker installed and ready on an Ubuntu-based server, such as an AWS EC2 instance.
+________________________________________
+1. Connect to Your Server
+First, connect to your server via SSH. This step is typically for AWS EC2 instances:
+ssh -i /path/to/your-key.pem ubuntu@your-ec2-public-ip
+•	/path/to/your-key.pem: Path to your SSH key file.
+•	ubuntu@your-ec2-public-ip: Replace with your EC2 instance's username and public IP address.
+
+These commands are for setting up Docker and can be run from any directory after you've SSHed into your server:
+2. Update the Package Index
+Once connected, update your package manager to ensure all packages are up to date:
+sudo apt-get update
+________________________________________
+3. Install Docker
+Next, install Docker on your server:
+sudo apt-get install apt-transport-https ca-certificates curl software-properties-common -y
+•	Add Docker’s official GPG key:
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+•	Set up the stable Docker repository:
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+•	Update the package index again:
+sudo apt-get update
+•	Finally, install Docker:
+sudo apt-get install docker-ce -y
+________________________________________
+4. Start and Enable Docker
+Start Docker and ensure it’s set to run on boot:
+sudo systemctl start docker
+sudo systemctl enable docker
+________________________________________
+5. Add Your User to the Docker Group
+To avoid needing sudo for Docker commands, add your user to the Docker group:
+sudo usermod -aG docker $USER
+•	Important: After running this command, log out and log back in to apply the group change.
+________________________________________
+6. Verify Docker Installation
+Check if Docker was installed correctly:
+docker --version
+You should see the Docker version information, confirming the installation was successful.
+________________________________________
+7. Verify Docker is Running
+You can also check that Docker is running with:
+sudo systemctl status docker
+This command should show that Docker is active and running.
+________________________________________
+8. Basic Docker Commands Recap
+•	List running containers: docker ps
+•	List all containers (including stopped ones): docker ps -a
+•	Start a container: docker start <container-id or container-name>
+•	Stop a container: docker stop <container-id or container-name>
+•	Remove a container: docker rm <container-id or container-name>
+•	Remove an image: docker rmi <image-id or image-name>
+________________________________________
+Commands to Run Inside Your Project Directory
+cd /path/to/your/project-directory
+Building the Docker Image
+Once your Dockerfile is ready, you can build the Docker image using the following command:
+docker build -t lets-connect .
+•	-t lets-connect: This tags the image with the name lets-connect.
+•	.: The period tells Docker to look in the current directory for the Dockerfile.
+
+Running the Docker Container
+To run the Docker container based on the image you just built, use:
+docker run -d -p 3000:3000 lets-connect
+•	-d: Runs the container in detached mode (in the background).
+•	-p 3000:3000: Maps port 3000 on your host machine to port 3000 inside the container.
+•	lets-connect: The name of the image you're running.
+Keeping Your Application Running 24/7
+To ensure your container runs continuously and restarts if it crashes, use the --restart option:
+docker run -d -p 3000:3000 --restart unless-stopped lets-connect
+•	--restart unless-stopped: This restart policy ensures that the container always restarts unless you manually stop it.
+Viewing Logs
+To view the logs of your running Docker container, use:
+docker logs lets-connect
+To continuously stream the logs (similar to pm2 logs):
+docker logs -f lets-connect
+Checking Running Containers
+To see a list of running containers, use:
+docker ps
+This command shows the container ID, names, and other details of all running containers.
+Starting a Stopped Container
+If you need to start a container that has been stopped:
+1.	List all containers (including stopped ones):
+docker ps -a
+2.	Start the stopped container:
+docker start <container-id or container-name>
+Get the Name and ID of Running Containers(All the containers running inside the ssh)
+To list all running containers, use:
+docker ps
+This command will display a table with several columns, including the Container ID and Names. The output will look something like this:
+CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS         PORTS                    NAMES
+d4a8f8f4b9c5   lets-connect    "npm start"              2 minutes ago   Up 2 minutes   0.0.0.0:3000->3000/tcp   lets-connect
+•	CONTAINER ID: A unique identifier for each container. For example, d4a8f8f4b9c5.
+•	NAMES: The name assigned to the container. If you didn't specify a name when starting the container, Docker generates a random name (e.g., lets-connect).
+
+Questions Recap
+1.	How to build a Docker image?
+o	Use docker build -t lets-connect . to create an image from the Dockerfile.
+2.	How to run the Docker container?
+o	Use docker run -d -p 3000:3000 lets-connect to run the container.
+3.	Do I still need PM2?
+o	No, Docker manages the application lifecycle, so you don't need PM2 for basic process management.
+4.	How to view logs?
+o	Use docker logs lets-connect to view logs and docker logs -f lets-connect to follow logs in real-time.
+5.	How to keep the app running 24/7?
+o	Use the --restart unless-stopped option with docker run to ensure the container restarts automatically.
+6.	What to do if the container stops?
+o	Use docker start <container-id or container-name> to restart a stopped container.
+________________________________________
+Conclusion
+This documentation covers all the essential steps and concepts related to Docker, from writing a Dockerfile to running your Next.js application in a Docker container. By following these steps, you can easily deploy and manage your application using Docker.
+
