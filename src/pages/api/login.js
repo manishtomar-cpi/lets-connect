@@ -1,5 +1,5 @@
-import connectMongo from '../../../../lib/mongodb';
-import User from '../../../models/User';
+import connectMongo from '../../../lib/mongodb';
+import User from '../../models/User';
 import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
 
