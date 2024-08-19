@@ -1,5 +1,5 @@
-import connectMongo from '../../../lib/mongodb';
-import User from '../../models/User';
+import connectMongo from '../../../../lib/mongodb';
+import User from '../../../models/User';
 import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
 
@@ -9,7 +9,9 @@ export default async function handler(req, res) {
       await connectMongo();
 
       const { email, password } = req.body;
+      console.log(req.body, 'from me bodyyyyy')
       const user = await User.findOne({ email });
+      console.log(user, 'from me >>>>>>>>>>>>>>>>>user ')
 
       if (!user || user.password !== password) {
         return res.status(401).json({ error: 'Invalid credentials' });
@@ -21,7 +23,8 @@ export default async function handler(req, res) {
 
       res.setHeader('Set-Cookie', serialize('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== 'development',
+        secure: false, // Set to false for HTTP
+        sameSite: 'lax', // Consider using 'lax' instead of 'strict' for better compatibility
         maxAge: 3600,
         path: '/',
       }));
@@ -29,6 +32,7 @@ export default async function handler(req, res) {
       res.status(200).json({ message: 'Login successful' });
     } catch (error) {
       console.error('Error in login handler:', error);
+      console.log(error, 'error')
       res.status(500).json({ error: 'Internal Server Error' });
     }
   } else {
