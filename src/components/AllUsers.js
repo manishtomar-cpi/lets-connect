@@ -21,24 +21,25 @@ const AllUsers = () => {
       try {
         const response = await fetch('/api/auth/me');
         const user = await response.json();
+        console.log(user, 'from all users')
         setCurrentUser(user);
 
         // Fetch friend requests sent by the current user
-        const requestsResponse = await fetch(`/api/friend-requests/status?senderId=${user._id}`);
+        const requestsResponse = await fetch(`/api/friend-requests/status?senderId=${user?._id}`);
         if (requestsResponse.ok) {
           const requestsData = await requestsResponse.json();
           setSentRequests(requestsData.map(req => req.receiver._id)); // Store receiver IDs of sent requests
         }
 
         // Fetch friend requests received by the current user
-        const receivedResponse = await fetch(`/api/friend-requests/status?receiverId=${user._id}`);
+        const receivedResponse = await fetch(`/api/friend-requests/status?receiverId=${user?._id}`);
         if (receivedResponse.ok) {
           const receivedData = await receivedResponse.json();
           setReceivedRequests(receivedData.map(req => req.sender._id)); // Store sender IDs of received requests
         }
 
         // Fetch current user's friends
-        const friendsResponse = await fetch(`/api/friends?userId=${user._id}`);
+        const friendsResponse = await fetch(`/api/friends?userId=${user?._id}`);
         if (friendsResponse.ok) {
           const friendsData = await friendsResponse.json();
           setFriends(friendsData.map(friend => friend._id)); // Store friend IDs

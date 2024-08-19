@@ -11,7 +11,7 @@ const Chat = ({ friend, currentUser, onBack }) => {
   useEffect(() => {
     const fetchReceiverName = async () => {
       try {
-        const response = await fetch(`/api/users/${friend._id}`);
+        const response = await fetch(`/api/users/${friend?._id}`);
         const data = await response.json();
         console.log(data, 'Receiver data from chat');
         setReceiverName(data.username);
@@ -22,7 +22,7 @@ const Chat = ({ friend, currentUser, onBack }) => {
 
     const fetchMessages = async () => {
       try {
-        const response = await fetch(`/api/chat/messages?userId=${currentUser._id}&friendId=${friend._id}`);
+        const response = await fetch(`/api/chat/messages?userId=${currentUser?._id}&friendId=${friend?._id}`);
         const data = await response.json();
         setMessages(data);
       } catch (error) {

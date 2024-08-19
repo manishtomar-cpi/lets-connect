@@ -37,7 +37,7 @@ const Messages = () => {
 
     const fetchChattedFriends = async () => {
       try {
-        const response = await fetch(`/api/chat/chatted-friends?userId=${currentUser._id}`);
+        const response = await fetch(`/api/chat/chatted-friends?userId=${currentUser?._id}`);
         if (response.ok) {
           const data = await response.json();
           setFriends(data);
@@ -61,7 +61,7 @@ const Messages = () => {
         console.log('Search query empty, showing all chatted friends'); // Log this case
       } else {
         try {
-          const response = await fetch(`/api/friends/search?userId=${currentUser._id}&query=${searchQuery}`);
+          const response = await fetch(`/api/friends/search?userId=${currentUser?._id}&query=${searchQuery}`);
           if (response.ok) {
             const data = await response.json();
             setFilteredFriends(data); // Show search results

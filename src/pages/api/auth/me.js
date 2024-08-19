@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   await connectMongo();
 
   const token = req.cookies.token;
-
+console.log(token, 'token from me')
   if (!token) {
     return res.status(401).json({ error: 'Not authenticated' });
   }

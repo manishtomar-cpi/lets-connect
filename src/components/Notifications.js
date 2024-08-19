@@ -33,7 +33,7 @@ const Notifications = () => {
 
     const fetchNotifications = async () => {
       try {
-        const response = await fetch(`/api/notifications?userId=${currentUser._id}`);
+        const response = await fetch(`/api/notifications?userId=${currentUser?._id}`);
         const data = await response.json();
         console.log('Fetched Notifications:', data); // Debug: Log fetched notifications
         setNotifications(data);
@@ -131,7 +131,7 @@ const Notifications = () => {
               {/* <p className="text-gray-800">{notif.requestId}</p> */}
             </div>
             <div className="actions flex space-x-2">
-            {notif.type === 'friendRequest' && notif.status === 'pending' && notif.receiverId === currentUser._id && (
+            {notif.type === 'friendRequest' && notif.status === 'pending' && notif.receiverId === currentUser?._id && (
                 <>
                   <FontAwesomeIcon
                     icon={faCheckCircle}
