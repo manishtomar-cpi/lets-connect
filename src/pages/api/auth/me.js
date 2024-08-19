@@ -9,7 +9,9 @@ export default async function handler(req, res) {
       await connectMongo();
 
       const { email, password } = req.body;
+      console.log(req.body, 'from me bodyyyyy')
       const user = await User.findOne({ email });
+      console.log(user, 'from me >>>>>>>>>>>>>>>>>user ')
 
       if (!user || user.password !== password) {
         return res.status(401).json({ error: 'Invalid credentials' });
@@ -30,6 +32,7 @@ export default async function handler(req, res) {
       res.status(200).json({ message: 'Login successful' });
     } catch (error) {
       console.error('Error in login handler:', error);
+      console.log(error, 'error')
       res.status(500).json({ error: 'Internal Server Error' });
     }
   } else {
