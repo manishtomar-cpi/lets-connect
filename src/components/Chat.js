@@ -36,6 +36,7 @@ const Chat = ({ friend, currentUser, onBack }) => {
 
     // Listen for real-time messages
     socket.on('receiveMessage', (message) => {
+      console.log('New message received:', messageData);
       // Only add the message if it's not already in the state
       if (message.sender !== currentUser._id || message.receiver !== friend._id) {
         setMessages((prevMessages) => [...prevMessages, message]);
