@@ -26,9 +26,12 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     if (typeof window !== 'undefined') {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      setIsLoggedIn(false);
-      router.push('/');
+      const response = await fetch('/api/auth/logout', { method: 'POST' });
+      if (response.ok) {
+        setIsLoggedIn(false);
+        router.push('/');  // Redirect to home after logout
+        router.refresh();  // Ensure that the state is fully updated
+      }
     }
   };
 
@@ -74,15 +77,14 @@ const Navbar = () => {
               </>
             ) : (
               <>
-              
+                <Link href="/" className="text-white mr-2">
+                  Home
+                </Link>
                 <Link href="/login" className="text-white lg:ml-4 mt-2 mr-3 lg:mt-0">
                   Login
                 </Link>
                 <Link href="/signup" className="text-white lg:ml-4 mt-2 lg:mt-0">
                   Sign Up
-                </Link>
-                <Link href="/" className="text-white lg:ml-4 mt-2 lg:mt-0 ml-3">
-                  Home
                 </Link>
               </>
             )}
