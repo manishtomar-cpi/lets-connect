@@ -126,11 +126,8 @@ const socketIo = require('socket.io');
 const connectMongo = require('./lib/mongodb');
 const Notification = require('./src/models/Notification');
 const cors = require('cors');
-
 const ChatMessage = require('./src/models/ChatMessage');
 const winston = require('winston'); // For logging
-
-app.use(cors({ origin: ['http://localhost:3000', 'http://16.171.6.165:3000'], credentials: true }));
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -166,7 +163,7 @@ app.prepare().then(() => {
             credentials: true
         }
     });
-    
+
     global.io = io; // Make io globally accessible
 
     connectMongo();  // Ensure MongoDB is connected
