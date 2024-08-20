@@ -125,7 +125,7 @@ const next = require('next');
 const socketIo = require('socket.io');
 const connectMongo = require('./lib/mongodb');
 const Notification = require('./src/models/Notification');
-const cors = require('cors');
+const User = require('./src/models/User');
 const ChatMessage = require('./src/models/ChatMessage');
 const winston = require('winston'); // For logging
 
@@ -163,7 +163,7 @@ app.prepare().then(() => {
             credentials: true
         }
     });
-
+    
     global.io = io; // Make io globally accessible
 
     connectMongo();  // Ensure MongoDB is connected
