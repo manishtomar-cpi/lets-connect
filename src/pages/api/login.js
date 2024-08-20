@@ -21,6 +21,9 @@ export default async function handler(req, res) {
         expiresIn: '1h',
       });
 
+      console.log('Generated Token:', token);
+
+
       res.setHeader('Set-Cookie', serialize('token', token, {
         httpOnly: true,
         secure: false, // Set to false for HTTP

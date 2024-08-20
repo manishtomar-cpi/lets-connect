@@ -9,6 +9,7 @@ export default async function handler(req, res) {
     await connectMongo();
 
     const token = req.cookies.token;
+    console.log('Received Token:', token);
 
     if (!token) {
         console.log('No token found in cookies');
