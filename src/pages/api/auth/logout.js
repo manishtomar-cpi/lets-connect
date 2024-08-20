@@ -1,6 +1,7 @@
 import { serialize } from 'cookie';
 
 export default function handler(req, res) {
+  console.log('in logout >>>>>>>>>>.hit')
   if (req.method === 'POST') {
     res.setHeader('Set-Cookie', serialize('token', '', {
       httpOnly: true,
