@@ -4,7 +4,8 @@ import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faComments } from '@fortawesome/free-solid-svg-icons';
 
-const socket = io('http://localhost:3000'); // Adjust the URL to your server's URL
+const socket = io('http://16.171.6.165:3000');
+
 
 const Messages = () => {
   const [friends, setFriends] = useState([]);
