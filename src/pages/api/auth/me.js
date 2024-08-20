@@ -4,6 +4,8 @@ import User from '../../../models/User';
 
 export default async function handler(req, res) {
     console.log('in auth handler>>>>>>>>>>>>');
+    console.log('MONGO_URI:', process.env.MONGO_URI);
+
     await connectMongo();
 
     const token = req.cookies.token;
