@@ -9,7 +9,7 @@ const socket = io('http://13.60.33.49:3000/');
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
-
+// jefnjewejewkr
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
