@@ -35,7 +35,7 @@ app.prepare().then(() => {
 
     const io = socketIo(server, {
         cors: {
-            origin: dev ? '*' : 'http://16.171.6.165:3000',  
+            origin: dev ? '*' : 'http://13.60.33.49:3000/',  
             methods: ['GET', 'POST'],
             allowedHeaders: ['Authorization'],
             credentials: true

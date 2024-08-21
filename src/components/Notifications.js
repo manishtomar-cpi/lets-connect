@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import io from 'socket.io-client';
 
-const socket = io('http://16.171.6.165:3000');
+const socket = io('http://13.60.33.49:3000/');
 
 
 const Notifications = () => {

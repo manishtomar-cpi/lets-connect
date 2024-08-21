@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faComments } from '@fortawesome/free-solid-svg-icons';
 
-const socket = io('http://16.171.6.165:3000');
+const socket = io('http://13.60.33.49:3000/');
 
 
 const Messages = () => {
