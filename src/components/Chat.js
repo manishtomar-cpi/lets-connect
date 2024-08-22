@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://13.60.33.49:3000/');
+const socket = io('http://13.48.57.71:3000/');
 
 
 const Chat = ({ friend, currentUser, onBack }) => {
